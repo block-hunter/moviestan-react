@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-unused-vars */
+import { useEffect, useState} from "react";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
+import HomePage from "./pages/Home";
+import MovieDetailPage from "./pages/MovieDetail";
+import Layout from "./components/Layout/Layout"
 
-function App() {
+import "./App.css"
+import "bootstrap/dist/css/bootstrap.min.css"
+
+const App = () => {
+
+  // Movies States
+  const [movies, setMovies] = useState([])
+  // const [searchText, setSearchText] = useState('avengers')
+  // console.log(movies)
+  // const getMovies = async (search) => {
+  //   const url = `http://omdbapi.com/?s=${search}&apikey=213fa4ba`
+
+  //   const response = await fetch(url)
+
+  //   if(!response.ok){
+  //       console.log('fetching error check api')
+  //       return
+  //   }
+
+  //   const body = await response.json()
+
+
+  //   if(body.Search) {
+  //       setMovies(body.Search)
+  //   }
+
+  // }
+
+  // useEffect(() => {
+  //   getMovies(searchText)
+  // }, [searchText])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<HomePage movies={movies} />} />
+          <Route path="/movie/:id" element={<MovieDetailPage />} />
+        </Route>
+      </Routes>
+    </>
+  )
 }
 
 export default App;
+
+

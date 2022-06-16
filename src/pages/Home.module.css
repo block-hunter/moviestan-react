@@ -1,0 +1,12 @@
+.home-container {
+    margin: 0 10vw;
+}
+
+
+.active-section {
+    border-bottom: 2px solid red;
+}
+
+.altNav {
+    border-bottom: 1px solid #EAEAEA;
+}

@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* for big screen */
+}
+
+.breadcrumb {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 2vh 0;
+}
+
+.breadcrumb .back-link {
+    color: brown;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    text-decoration: none;
+    border-bottom: 1px solid brown;
+}
+
+.breadcrumb span {
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.movie-poster {
+    max-height: 35vw;
+}
+
+.movie-detail {
+    height: 100vh;
+    padding-top: 8vh;
+    border: 1px solid;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.movie-desc {
+    width: 40%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+}
