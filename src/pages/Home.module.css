@@ -30,3 +30,9 @@
     align-items: center;
     justify-content:center;
 }
+
+.favourites-btn {
+    color: black;
+    text-transform: capitalize;
+    text-decoration: none;
+}

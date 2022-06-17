@@ -7,10 +7,7 @@ import styles from "./Favourites.module.css"
 
 const FavouritesPage = () => {
 
-    console.log("test")
     const favouritesCtx = useContext(FavouritesContext)
-
-    console.log(favouritesCtx)
 
     if(favouritesCtx.favouriteMovies.length === 0) {
         return(
@@ -27,13 +24,13 @@ const FavouritesPage = () => {
 
             <div className={styles.altNav + ' row my-5 text-capitalize font-bold'} >
             
+                  
                 <div className='col-4 d-flex  align-items-end justify-content-start gap-4 fs-5'>
-                    <Link to="/">
+                    <Link to="/" className={styles["home-btn"]}>
                         <div>All Movies</div>
                     </Link>
-                    <Link to="/Favourites">
-                        <div className={styles["active-section"]}>Watch List</div>
-                    </Link>
+
+                    <div className={styles["active-section"]}>Watch List (<span>{favouritesCtx.favouriteMovies.length}</span>)</div>
                 </div>
 
                 <div className='col-8 d-flex justify-content-end'>
@@ -48,8 +45,8 @@ const FavouritesPage = () => {
             <div>
                 {/* movie list */}
                 <MovieList movies={favouritesCtx.favouriteMovies} />
-                {                    console.log(favouritesCtx.favouriteMovies)
-                }
+                    {console.log("favouritesCtx")}
+                    {console.log(favouritesCtx.favouriteMovies)}
             </div>
         </div>
     )

@@ -5,13 +5,20 @@ import axios from "axios"
 import { SearchContext } from '../store/search-store'
 import Loader from '../components/Loader/Loader'
 import {Link} from "react-router-dom"
+import { FavouritesContext } from '../store/favourites-store'
 
 
 const HomePage = () => {
 
     const [movies, setMovies] = useState([])
+    const [filteredMovies, setFilteredMovies] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
+
+    const favouritesCtx = useContext(FavouritesContext)
+    const searchCtx = useContext(SearchContext)
+    const [searchParam] = useState(["budget", "name", "popularity"]);
+    //searcCtx.search
 
     //infinity scroll default value = page 1
     let offset = 1
@@ -56,11 +63,42 @@ const HomePage = () => {
         window.addEventListener('scroll', handleScroll)
     }, [])
 
+    useEffect(() => {
+        if(searchCtx.search.length > 3) {
+            searchInputMovie()
+        }
+    }, [searchCtx.search])
 
-    const searchList = () => {
-        
+    const searchInputMovie = async () => {
+        const searchValue = searchCtx.search.toLowerCase()
+        let results = []
+
+     // get now playing movies first page init 
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=b70f3086a20d2232a314c0f03efeb5d3&query=${searchValue}`
+        setIsLoading(true)
+
+        try {
+            let response = await axios.get(url).then(res => res.data);
+    
+            // check request errors
+            if (response.Response === "False") {
+                throw Error(response.Error);
+            } 
+
+            setFilteredMovies(prevValue => {
+                    const newArr = [...response.results]
+                    return newArr
+            })
+
+            setIsLoading(false)
+            
+        } catch (error) {
+            setIsLoading(false)
+            setError(error.message)
+            throw error.message;
+        }
     }
-
+    
 
     if(isLoading) {
         return(
@@ -89,8 +127,8 @@ const HomePage = () => {
             
                 <div className='col-4 d-flex  align-items-end justify-content-start gap-4 fs-5'>
                     <div className={styles["active-section"]}>All Movies</div>
-                    <Link to="/Favourites">
-                        <div>Watch List</div>
+                    <Link to="/Favourites" className={styles["favourites-btn"]}>
+                        <div>Watch List (<span>{favouritesCtx.favouriteMovies.length}</span>)</div>
                     </Link>
                 </div>
 
@@ -105,7 +143,7 @@ const HomePage = () => {
 
             <div>
                 {/* movie list */}
-                <MovieList movies={movies} />
+                {searchCtx.search.length < 3 ? (<MovieList movies={movies} />) : <MovieList movies={filteredMovies} />}
             </div>
         </div>
     )

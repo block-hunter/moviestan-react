@@ -1,5 +1,6 @@
 .movie-box {
     padding: 0;
+    max-height: 60vh;
     margin: 0;
 }
 

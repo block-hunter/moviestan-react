@@ -3,28 +3,41 @@ import { Link } from 'react-router-dom'
 import {FavouritesContext} from '../../store/favourites-store'
 import styles from "./Movie.module.css"
 
-const Movie = ({id, movieTitle, imgUrl, releaseDate, categories}) => {
+const Movie = ({id, movieTitle, imgUrl, releaseDate, categories, isFavourite}) => {
 
   const favouritesCtx = useContext(FavouritesContext)
 
-  // let posterUrl = "https://image.tmdb.org/t/p/w500/" + imgUrl
-  // let releaseYear = releaseDate.slice(0, 4)
+  let posterUrl = "https://image.tmdb.org/t/p/w500/" + imgUrl
+  let releaseYear = releaseDate
 
-  let posterUrl =''
-  let releaseYear =''
-  console.log(releaseDate)
+  if(typeof releaseDate === 'string') {
+    releaseYear = releaseDate.slice(0, 4)
+  }
+
   // let category = categories.map(category => category.name) 
 
-  const AddToFavouriteHandler = () => {
+  const addToFavouriteHandler = () => {
     const movie = {
       id: id,
-      movieTitle: movieTitle,
-      imgUrl: imgUrl,
-      releaseDate: releaseDate,
-      categories: categories
+      originial_title: movieTitle,
+      poster_path: imgUrl,
+      release_date: releaseDate,
+      genre_ids: categories,
+      isFavourite: true
     }
 
     favouritesCtx.addMovieToFavourite(movie)
+  }
+
+  const deleteFromFavouriteHandler = () => {
+    favouritesCtx.deleteMovieFromFavourite(id)
+  }
+
+
+  let FavouriteButton = <button className='btn btn-success' onClick={addToFavouriteHandler}>+</button>
+
+  if(isFavourite) {
+    FavouriteButton = <button className='btn btn-danger' onClick={deleteFromFavouriteHandler}>delete</button>
   }
 
   return (
@@ -44,10 +57,7 @@ const Movie = ({id, movieTitle, imgUrl, releaseDate, categories}) => {
               <p className='font-weight-light'>Drama ({releaseYear}) </p>
             </div>
           </Link>
-
-          <button className='btn btn-success' onClick={AddToFavouriteHandler}>
-            +
-          </button>
+          {FavouriteButton}
         </div>
       </div>
   )

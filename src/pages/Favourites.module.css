@@ -5,6 +5,9 @@
 
 .active-section {
     border-bottom: 2px solid red;
+    text-transform: capitalize;
+    text-decoration: none;
+    color: black;
 }
 
 .altNav {
@@ -29,4 +32,16 @@
     flex-direction: column;
     align-items: center;
     justify-content:center;
+}
+
+.home-btn {
+    color: black;
+    text-transform: capitalize;
+    text-decoration: none;
+}
+
+.movies-btn {
+    color: black;
+    text-transform: capitalize;
+    text-decoration: none;
 }

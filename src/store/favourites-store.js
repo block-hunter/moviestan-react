@@ -7,39 +7,30 @@ export const FavouritesContext = createContext({
 })
 
 const FavouritesContextProvider = (props) => {
-
+    
     const [favouriteMovies, setFavouriteMovies] = useState([])
-    // new value type
-    // id, name, img, year, category
 
-    const addMovieToFavourite = (movie) => {
-        setFavouriteMovies([...favouriteMovies, movie])
-    }   
-
+    // Local Storage: setting & getting data
     useEffect(() => {
-
-        let localMovies =localStorage.getItem('movies')
-
-        if(localMovies !== '') {
-            setFavouriteMovies(JSON.parse(localMovies))
+        const favouriteItemsData = JSON.parse(localStorage.getItem('movies'))
+        
+        if (favouriteItemsData) {
+            setFavouriteMovies(favouriteItemsData)
         }
     }, [])
 
     useEffect(() => {
         localStorage.setItem('movies', JSON.stringify(favouriteMovies))
     }, [favouriteMovies])
-    
 
-    console.log(favouriteMovies[0])
 
-    const deleteMovieFromFavourite = (deleteMovieId) => {
-        setFavouriteMovies(prevValue => {
-            const updatedArr = prevValue.filter(movie => movie.id !== deleteMovieId)
 
-            return updatedArr
-        })
+    const addMovieToFavourite = (movie) => {
+        setFavouriteMovies(prevItems => [...prevItems, movie])
+    }
 
-        localStorage.setItem('movies', JSON.stringify(favouriteMovies))
+    const deleteMovieFromFavourite = (id) => {
+        setFavouriteMovies(prevItems => prevItems.filter(oldMovie => oldMovie.id !== id))  
     }
 
     const context = {
