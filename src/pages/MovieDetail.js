@@ -88,6 +88,8 @@ const MovieDetailPage = () => {
               {movieDetail.overview}
             </span>
           </div>
+
+          <button>ADD TO FAVOURITE</button>
         </div>
       </section>
     </div>

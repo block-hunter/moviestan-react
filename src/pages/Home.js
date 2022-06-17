@@ -3,13 +3,15 @@ import styles from "./Home.module.css"
 import MovieList from '../components/MovieList/MovieList'
 import axios from "axios"
 import { SearchContext } from '../store/search-store'
-
+import Loader from '../components/Loader/Loader'
+import {Link} from "react-router-dom"
 
 
 const HomePage = () => {
 
-    const searchCtx = useContext(SearchContext)
     const [movies, setMovies] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     //infinity scroll default value = page 1
     let offset = 1
@@ -18,6 +20,7 @@ const HomePage = () => {
     const getAllMovies = async () => {
         // get now playing movies first page init 
         let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=b70f3086a20d2232a314c0f03efeb5d3&page=${offset}`
+        setIsLoading(true)
 
         try {
             let response = await axios.get(url).then(res => res.data);
@@ -27,20 +30,16 @@ const HomePage = () => {
                 throw Error(response.Error);
             } 
 
-            // check is search movies
-            if(searchCtx.search.length > 3) {
-                
-                if(response.Results.length > 0) setMovies(response.Results)
-                return
-            }
-
-
             setMovies(prevValue => {
                 const newArr = [...prevValue, ...response.results]
                 return newArr
             })
+
+            setIsLoading(false)
             
         } catch (error) {
+            setIsLoading(false)
+            setError(error.message)
             throw error.message;
         }
     }
@@ -53,15 +52,35 @@ const HomePage = () => {
     }
 
     useEffect(() => {
-
-            getAllMovies()
+        getAllMovies()
         window.addEventListener('scroll', handleScroll)
     }, [])
 
 
     const searchList = () => {
-
+        
     }
+
+
+    if(isLoading) {
+        return(
+            <div className={styles["loader-container"]}>
+                <Loader />
+            </div>
+        )
+    }
+
+
+    if(error !== null) {
+        return (
+            <div className={styles['error-container']}>
+                <h1 className='fw-bold'>Sorry 😔</h1>
+                <p>{error}</p>
+            </div>
+        ) 
+    }
+
+
 
     return (
         <div className={styles["home-container"]}>
@@ -70,7 +89,9 @@ const HomePage = () => {
             
                 <div className='col-4 d-flex  align-items-end justify-content-start gap-4 fs-5'>
                     <div className={styles["active-section"]}>All Movies</div>
-                    <div>Watch List</div>
+                    <Link to="/Favourites">
+                        <div>Watch List</div>
+                    </Link>
                 </div>
 
                 <div className='col-8 d-flex justify-content-end'>
